@@ -8,6 +8,7 @@ Features:
 - Direct Local Artifact loading (robust fallback when API service is offline)
 """
 import os
+import sys
 import json
 import joblib
 import pandas as pd
@@ -16,6 +17,18 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
+
+# Ensure repository root is on sys.path for joblib unpickling
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+# Import model & transformer classes into scope so unpickler resolves them
+from src.credit_scoring.features.woe_iv import WOEIVTransformer
+from src.credit_scoring.models.scorecard import RegulatoryScorecard
+from src.credit_scoring.models.challenger import ChallengerModel
+from src.credit_scoring.data.loader import generate_benchmark_lendingclub_data, clean_and_prepare_lendingclub_data
 
 # Set Page Config
 st.set_page_config(
@@ -59,10 +72,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# -------------------------------------------------------------
-# Data & Artifact Loading Helpers (Local Fallback Resilient)
-# -------------------------------------------------------------
-ARTIFACTS_DIR = "artifacts"
+ARTIFACTS_DIR = os.environ.get("ARTIFACTS_DIR", os.path.join(PROJECT_ROOT, "artifacts"))
 API_URL = os.environ.get("API_URL", "http://127.0.0.1:8000")
 
 @st.cache_resource
