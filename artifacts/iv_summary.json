@@ -1,0 +1,82 @@
+[
+  {
+    "feature": "grade",
+    "information_value": 0.5279,
+    "predictive_power": "Suspiciously High (> 0.50)"
+  },
+  {
+    "feature": "int_rate",
+    "information_value": 0.4804,
+    "predictive_power": "Strong (0.30 - 0.50)"
+  },
+  {
+    "feature": "sub_grade",
+    "information_value": 0.4138,
+    "predictive_power": "Strong (0.30 - 0.50)"
+  },
+  {
+    "feature": "revol_util",
+    "information_value": 0.2448,
+    "predictive_power": "Medium (0.10 - 0.30)"
+  },
+  {
+    "feature": "dti",
+    "information_value": 0.1461,
+    "predictive_power": "Medium (0.10 - 0.30)"
+  },
+  {
+    "feature": "delinq_2yrs",
+    "information_value": 0.1137,
+    "predictive_power": "Medium (0.10 - 0.30)"
+  },
+  {
+    "feature": "inq_last_6mths",
+    "information_value": 0.0808,
+    "predictive_power": "Weak (0.02 - 0.10)"
+  },
+  {
+    "feature": "annual_inc",
+    "information_value": 0.0663,
+    "predictive_power": "Weak (0.02 - 0.10)"
+  },
+  {
+    "feature": "pub_rec",
+    "information_value": 0.059,
+    "predictive_power": "Weak (0.02 - 0.10)"
+  },
+  {
+    "feature": "loan_amnt",
+    "information_value": 0.0276,
+    "predictive_power": "Weak (0.02 - 0.10)"
+  },
+  {
+    "feature": "purpose",
+    "information_value": 0.0013,
+    "predictive_power": "Unpredictive (< 0.02)"
+  },
+  {
+    "feature": "term",
+    "information_value": 0.0012,
+    "predictive_power": "Unpredictive (< 0.02)"
+  },
+  {
+    "feature": "emp_length",
+    "information_value": 0.0011,
+    "predictive_power": "Unpredictive (< 0.02)"
+  },
+  {
+    "feature": "home_ownership",
+    "information_value": 0.001,
+    "predictive_power": "Unpredictive (< 0.02)"
+  },
+  {
+    "feature": "total_acc",
+    "information_value": 0.0009,
+    "predictive_power": "Unpredictive (< 0.02)"
+  },
+  {
+    "feature": "emp_length_num",
+    "information_value": 0.0005,
+    "predictive_power": "Unpredictive (< 0.02)"
+  }
+]
