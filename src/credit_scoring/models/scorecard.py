@@ -81,7 +81,10 @@ class RegulatoryScorecard:
         return self
 
     def predict_proba(self, X_woe: pd.DataFrame) -> np.ndarray:
-        """Returns predicted probability [P(Good), P(Bad)]"""
+        """Returns predicted probability [P(Good), P(Bad)] with verified feature alignment."""
+        if hasattr(self, "feature_names") and self.feature_names:
+            X_aligned = X_woe.reindex(columns=self.feature_names, fill_value=0.0)
+            return self.lr_model.predict_proba(X_aligned)
         return self.lr_model.predict_proba(X_woe)
 
     def calculate_score_from_proba(self, prob_bad: np.ndarray) -> np.ndarray:

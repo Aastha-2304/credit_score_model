@@ -185,6 +185,8 @@ with tab1:
     if scorecard is not None and woe_trans is not None:
         df_row = pd.DataFrame([applicant_data])
         df_woe_row = woe_trans.transform(df_row)
+        if hasattr(scorecard, "feature_names") and scorecard.feature_names:
+            df_woe_row = df_woe_row.reindex(columns=scorecard.feature_names, fill_value=0.0)
         
         pd_scorecard = float(scorecard.predict_proba(df_woe_row)[0, 1])
         credit_score = int(round(float(scorecard.calculate_score_from_proba(np.array([pd_scorecard]))[0])))
@@ -506,6 +508,8 @@ with tab4:
         df_raw_cohort = generate_benchmark_lendingclub_data(n_samples=500, random_state=123)
         X_cohort, y_cohort = clean_and_prepare_lendingclub_data(df_raw_cohort)
         X_cohort_woe = woe_trans.transform(X_cohort)
+        if hasattr(scorecard, "feature_names") and scorecard.feature_names:
+            X_cohort_woe = X_cohort_woe.reindex(columns=scorecard.feature_names, fill_value=0.0)
         pds = scorecard.predict_proba(X_cohort_woe)[:, 1]
         scores = scorecard.calculate_score_from_proba(pds).round().astype(int)
         
