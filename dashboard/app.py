@@ -490,6 +490,28 @@ with tab4:
     st.markdown("Simulate policy cutoff thresholds to balance loan approval volume against bad debt loss rates.")
 
     sample_df = artifacts.get("sample_df")
+    if sample_df is None and scorecard is not None and woe_trans is not None:
+        # Dynamically generate synthetic portfolio cohort in-memory (no disk CSV required)
+        from src.credit_scoring.data.loader import generate_benchmark_lendingclub_data, clean_and_prepare_lendingclub_data
+        df_raw_cohort = generate_benchmark_lendingclub_data(n_samples=500, random_state=123)
+        X_cohort, y_cohort = clean_and_prepare_lendingclub_data(df_raw_cohort)
+        X_cohort_woe = woe_trans.transform(X_cohort)
+        pds = scorecard.predict_proba(X_cohort_woe)[:, 1]
+        scores = scorecard.calculate_score_from_proba(pds).round().astype(int)
+        
+        sample_df = X_cohort.copy()
+        sample_df["actual_default"] = y_cohort.values
+        sample_df["scorecard_score"] = scores
+        sample_df["scorecard_pd"] = pds.round(4)
+        if challenger is not None:
+            try:
+                aligned_cohort = X_cohort.reindex(columns=challenger.feature_names)
+                sample_df["challenger_pd"] = challenger.predict_proba(aligned_cohort)[:, 1].round(4)
+            except Exception:
+                sample_df["challenger_pd"] = sample_df["scorecard_pd"]
+        else:
+            sample_df["challenger_pd"] = sample_df["scorecard_pd"]
+
     if sample_df is not None:
         col_c1, col_c2 = st.columns([1, 2])
         with col_c1:
